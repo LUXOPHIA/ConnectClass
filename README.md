@@ -34,9 +34,8 @@ end;
        property Prev :IItem read GetPrev write SetPrev;
        property Next :IItem read GetNext write SetNext;
      end;
-
-     //-------------------------------------------------------------------------
-
+```
+```pascal
      TItem = class( TInterfacedObject, IItem )
      private
        _Prev :IItem;
@@ -81,9 +80,8 @@ end;
        ///// プロパティ
        property Name :String read GetName;
      end;
-
-     //-------------------------------------------------------------------------
-
+```
+```pascal
      TMyItem<_TPrev_,_TNext_:IMyItem> = class( TItem<_TPrev_,_TNext_>, IMyItem )
      private
      protected
@@ -98,7 +96,7 @@ end;
 ```
 
 ## MYX.Connect4
-最終的に利用する際には、キャストクラス `TMyItem<P,N>` に参照させたいクラス型を指定し、単純なクラスへ落とし込む。
+最終的に利用する際には、キャストクラス `TMyItem<P,N>` に参照させたいクラス型を指定し、単純なクラス型へ落とし込む。
 ```pascal
      IMyHead = interface;
      IMyKnot = interface;
@@ -129,9 +127,8 @@ end;
        property Prev  :IMyKnot read GetPrev write SetPrev;
        property NameT :String  read GetName;
      end;
-
-     //-------------------------------------------------------------------------
-
+```
+```pascal
      TMyHead = class( TMyItem<IMyHead,IMyKnot>, IMyHead )
      public
        ///// プロパティ
