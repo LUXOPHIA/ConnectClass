@@ -101,7 +101,8 @@ end;
      IMyHead = interface;
      IMyKnot = interface;
      IMyTail = interface;
-
+```
+```pascal
      IMyHead = interface( IMyItem )
        ///// アクセス
        function GetNext :IMyKnot;  procedure SetNext( Next_:IMyKnot );
