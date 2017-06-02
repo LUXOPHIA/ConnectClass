@@ -27,10 +27,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _Name :String;
-     public
-       constructor Create( const Name_:String );
        ///// アクセス
        function GetName :String;
+     public
+       constructor Create( const Name_:String );
        ///// プロパティ
        property Name :String read GetName;
      end;

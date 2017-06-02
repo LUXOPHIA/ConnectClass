@@ -51,6 +51,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMyHead
 
      TMyHead = class( TMyItem<IMyHead,IMyKnot>, IMyHead )
+     private
+     protected
+     public
        ///// プロパティ
        property NameH :String read GetName;
      end;
@@ -58,6 +61,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMyKnot
 
      TMyKnot = class( TMyItem<IMyHead,IMyTail>, IMyKnot )
+     private
+     protected
+     public
        ///// プロパティ
        property NameK :String read GetName;
      end;
@@ -65,6 +71,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMyTail
 
      TMyTail = class( TMyItem<IMyKnot,IMyItem>, IMyTail )
+     private
+     protected
+     public
        ///// プロパティ
        property NameT :String read GetName;
      end;
