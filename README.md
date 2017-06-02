@@ -20,7 +20,7 @@ begin
 end;
 ```
 
-## `MYX.Connect1`
+## MYX.Connect1
 ジェネリクスではないクラスとして、単純に `Prev`/`Next` プロパティを持つクラス `TItem` を定義する。
 なお、同時にインタフェース `IItem` も定義し、クラス側のフィールドにもインタフェース型を用いる。
 ```pascal
@@ -54,7 +54,7 @@ end;
      end;
 ```
 
-## `MYX.Connect2`
+## MYX.Connect2
 プロパティをキャストするジェネリクスクラス `TItem<P,N>` を定義する（以降`キャストクラス`と呼称）。
 ```pascal
      TItem<_TPrev_,_TNext_:IItem> = class( TItem, IItem )
@@ -72,7 +72,7 @@ end;
      end;
 ```
 
-## `MYX.Connect3`
+## MYX.Connect3
 キャストクラス `TItem<P,N>` は自由に継承することができるが、共にインタフェース `IItem` も更新していく。
 ```pascal
      IMyItem = interface( IItem )
@@ -97,7 +97,7 @@ end;
      end;
 ```
 
-## `MYX.Connect4`
+## MYX.Connect4
 最終的に利用する際には、キャストクラス `TMyItem<P,N>` に参照させたいクラス型を指定し、単純なクラスへ落とし込む。
 ```pascal
      IMyHead = interface;
