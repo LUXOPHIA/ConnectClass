@@ -18,10 +18,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        ///// アクセス
-       function GetPrev :_TPrev_;
-       procedure SetPrev( Prev_:_TPrev_ );
-       function GetNext :_TNext_;
-       procedure SetNext( Next_:_TNext_ );
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
      public
        ///// プロパティ
        property Prev :_TPrev_ read GetPrev write SetPrev;

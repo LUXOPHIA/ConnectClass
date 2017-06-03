@@ -12,10 +12,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      IItem = interface
        ///// アクセス
-       function GetPrev :IItem;
-       procedure SetPrev( Prev_:IItem );
-       function GetNext :IItem;
-       procedure SetNext( Next_:IItem );
+       function GetPrev :IItem;  procedure SetPrev( Prev_:IItem );
+       function GetNext :IItem;  procedure SetNext( Next_:IItem );
        ///// プロパティ
        property Prev :IItem read GetPrev write SetPrev;
        property Next :IItem read GetNext write SetNext;
@@ -31,10 +29,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Next :IItem;
      protected
        ///// アクセス
-       function GetPrev :IItem;
-       procedure SetPrev( Prev_:IItem );
-       function GetNext :IItem;
-       procedure SetNext( Next_:IItem );
+       function GetPrev :IItem;  procedure SetPrev( Prev_:IItem );
+       function GetNext :IItem;  procedure SetNext( Next_:IItem );
      public
        ///// プロパティ
        property Prev :IItem read GetPrev write SetPrev;
