@@ -248,7 +248,7 @@ end;
      end;
 ```
 
-しかしこの場合も、インタフェースのプロトタイプ宣言 `= interface;` 段階において、すべてのインタフェースが 'IInterface' 型と見なされる問題により、キャストインタフェース `IItem<P,N>` へ代入することができなくなる。
+しかしこの場合も、インタフェースのプロトタイプ宣言 `= interface;` 段階において、すべてのインタフェースが `IInterface` 型と見なされる問題により、キャストインタフェース `IItem<P,N>` へ代入することができなくなる。
 ```pascal
      IMyHead = interface;
      IMyKnot = interface;
