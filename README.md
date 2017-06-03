@@ -30,10 +30,8 @@ end;
 ```pascal
      IItem = interface
        ///// アクセス
-       function GetPrev :IItem;
-       procedure SetPrev( Prev_:IItem );
-       function GetNext :IItem;
-       procedure SetNext( Next_:IItem );
+       function GetPrev :IItem;  procedure SetPrev( Prev_:IItem );
+       function GetNext :IItem;  procedure SetNext( Next_:IItem );
        ///// プロパティ
        property Prev :IItem read GetPrev write SetPrev;
        property Next :IItem read GetNext write SetNext;
@@ -46,10 +44,8 @@ end;
        _Next :IItem;
      protected
        ///// アクセス
-       function GetPrev :IItem;
-       procedure SetPrev( Prev_:IItem );
-       function GetNext :IItem;
-       procedure SetNext( Next_:IItem );
+       function GetPrev :IItem;  procedure SetPrev( Prev_:IItem );
+       function GetNext :IItem;  procedure SetNext( Next_:IItem );
      public
        ///// プロパティ
        property Prev :IItem read GetPrev write SetPrev;
@@ -64,10 +60,8 @@ end;
      private
      protected
        ///// アクセス
-       function GetPrev :_TPrev_;
-       procedure SetPrev( Prev_:_TPrev_ );
-       function GetNext :_TNext_;
-       procedure SetNext( Next_:_TNext_ );
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
      public
        ///// プロパティ
        property Prev :_TPrev_ read GetPrev write SetPrev;
@@ -101,6 +95,8 @@ end;
 
 ## MYX.Connect4
 最終的に利用する際には、キャストクラス `TMyItem<P,N>` に参照させたいクラス型を指定し、単純なクラス型へ落とし込む。
+その際、それぞれのクラスのインタフェースにおいて、相互参照するプロパティを再度定義し直す必要がある。
+しかし対応するアクセサは、キャストクラス `TItem<P,N>` の 時点で実装してあるので、クラス側での改めて実装し直す必要はない。
 ```pascal
      IMyHead = interface;
      IMyKnot = interface;
