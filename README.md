@@ -13,10 +13,14 @@ begin
      K := TMyKnot.Create( 'TMyKnot' );
      T := TMyTail.Create( 'TMyTail' );
 
+     //  [Head]<Next>
+     //     ↑    ↓
+     //  <Prev>[Knot]<Next>
+     //           ↑    ↓
+     //        <Prev>[Tail]
      H.Next := K;
-     K.Prev := H;
-     K.Next := T;
-     T.Prev := K;
+     K.Prev := H;  K.Next := T;
+                   T.Prev := K;
 end;
 ```
 
