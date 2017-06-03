@@ -23,6 +23,27 @@ begin
                    T.Prev := K;
 end;
 ```
+もちろん、何度参照を行き来しても、それぞれのクラスが（キャストもせずに）直接参照できなくてはならない。
+```
+・H.Next = TMyKnot
+・K.Prev = TMyHead
+・K.Next = TMyTail
+・T.Prev = TMyKnot
+・H.Next.Prev = TMyHead
+・H.Next.Next = TMyTail
+・K.Prev.Next = TMyKnot
+・K.Next.Prev = TMyKnot
+・T.Prev.Prev = TMyHead
+・T.Prev.Next = TMyTail
+・H.Next.Prev.Next = TMyKnot
+・H.Next.Next.Prev = TMyKnot
+・K.Prev.Next.Prev = TMyHead
+・K.Prev.Next.Next = TMyTail
+・K.Next.Prev.Prev = TMyHead
+・K.Next.Prev.Next = TMyTail
+・T.Prev.Prev.Next = TMyKnot
+・T.Prev.Next.Prev = TMyKnot
+```
 
 ## MYX.Connect1.pas
 ジェネリクスではないクラスとして、単純に `Prev`/`Next` プロパティを持つクラス `TItem` を定義する。
