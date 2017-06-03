@@ -2,7 +2,7 @@
 
 ジェネリクスを利用し、後から参照するクラス型を指定可能な汎用クラスを定義する方法。
 
-例として、双方向リストのようなクラスを定義してみる。なお、この手法には Interface 実装が必須となる。
+例として、双方向リストのような相互参照し合うクラスを定義してみる。なお、この手法には Interface 実装が必須となる。
 ```pascal
 var
    H :IMyHead;
@@ -24,7 +24,7 @@ begin
 end;
 ```
 
-## MYX.Connect1
+## MYX.Connect1.pas
 ジェネリクスではないクラスとして、単純に `Prev`/`Next` プロパティを持つクラス `TItem` を定義する。
 なお、同時にインタフェース `IItem` も定義し、クラス側のフィールドにもインタフェース型を用いる。
 ```pascal
@@ -53,7 +53,7 @@ end;
      end;
 ```
 
-## MYX.Connect2
+## MYX.Connect2.pas
 プロパティをキャストするジェネリクスクラス `TItem<P,N>` を定義する（以降`キャストクラス`と呼称）。
 ```pascal
      TItem<_TPrev_,_TNext_:IItem> = class( TItem, IItem )
@@ -69,7 +69,7 @@ end;
      end;
 ```
 
-## MYX.Connect3
+## MYX.Connect3.pas
 キャストクラス `TItem<P,N>` は自由に継承することができるが、共にインタフェース `IItem` も更新していく。
 ```pascal
      IMyItem = interface( IItem )
@@ -93,7 +93,7 @@ end;
      end;
 ```
 
-## MYX.Connect4
+## MYX.Connect4.pas
 最終的に利用する際には、キャストクラス `TMyItem<P,N>` に参照させたいクラス型を指定し、単純なクラス型へ落とし込む。
 もっともその際、それぞれのクラスのインタフェースにおいて、相互参照するプロパティを再度定義し直す必要がある。
 しかし対応するアクセサは、キャストクラス `TItem<P,N>` の 時点で実装済なので、クラス側での改めて実装し直す必要はない。
@@ -130,7 +130,7 @@ end;
      end;
 ```
 ```pascal
-     TMyHead = class( TMyItem<IMyHead,IMyKnot>, IMyHead )
+     TMyHead = class( TMyItem<TMyItem,IMyKnot>, IMyHead )
      public
        ///// プロパティ
        property NameH :String read GetName;
@@ -146,5 +146,120 @@ end;
      public
        ///// プロパティ
        property NameT :String read GetName;
+     end;
+```
+
+----
+## 失敗
+そもそも初めからクラスをジェネリクス化しておけば、相互参照するクラスを定義可能である。
+しかし、`_TPrev_`/`_TNext_` へは最終的に `TItem<_TPrev_,_TNext_>` 型が代入される予定にもかかわらず、型制約がないので、`TItem<_TPrev_,_TNext_>` クラス内では `TObject` 型と見なされてしまい、`TItem<_TPrev_,_TNext_>` クラス独自のプロパティやメソッドを利用することができない。
+```pascal
+     TItem<_TPrev_,_TNext_> = class
+     private
+       _Prev :_TPrev_;
+       _Next :_TNext_;
+     protected
+       ///// アクセス
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
+     public
+       ///// プロパティ
+       property Prev :_TPrev_ read GetPrev write SetPrev;
+       property Next :_TNext_ read GetNext write SetNext;
+     end;
+```
+
+そこで型制約が必要となるが、もちろん再帰定義になってしまうので、ジェネリッククラスが自分自身の型で制約することはできない。
+```pascal
+     TItem<_TPrev_,_TNext_:TItem<_TPrev_,_TNext_>> = class
+     ～
+     end;
+```
+
+つまり、ジェネリスク化されていないクラス `TItem` として一旦定義した上で、キャストクラス `TItem<P,N>` を作る必要が出てくる。
+```pascal
+     TItem = class
+     private
+       _Prev :TItem;
+       _Next :TItem;
+     protected
+       ///// アクセス
+       function GetPrev :TItem;  procedure SetPrev( Prev_:TItem );
+       function GetNext :TItem;  procedure SetNext( Next_:TItem );
+     public
+       ///// プロパティ
+       property Prev :TItem read GetPrev write SetPrev;
+       property Next :TItem read GetNext write SetNext;
+     end;
+```
+```pascal
+     TItem<_TPrev_,_TNext_:TItem> = class( TItem )
+     protected
+       ///// アクセス
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
+     public
+       ///// プロパティ
+       property Prev :_TPrev_ read GetPrev write SetPrev;
+       property Next :_TNext_ read GetNext write SetNext;
+     end;
+```
+
+しかしこの方法では、複数のクラスを相互参照させようとした場合、プロトタイプ宣言 `= class;` をした段階では、すべてのクラスが `TObject` 型と見なされているので、キャストクラスへ代入できなくなる。したがって最終的に **MYX.Connect1.pas** のように、インタフェースを使わざるを得なくなる。
+```pascal
+     TMyHead = class;
+     TMyKnot = class;
+     TMyTail = class;
+```
+```pascal
+     TMyHead = class( TItem<TMyItem,TMyKnot> )
+     end;
+     
+     TMyKnot = class( TItem<TMyHead,TMyTail> )
+     end;
+     
+     TMyTail = class( TItem<TMyKnot,TMyItem> )
+     end;
+```
+
+なお、キャストクラスを作る際に、対となるキャストインタフェースもジェネリクス化しておくという手段も考えられる。
+この手法が可能であれば、**MYX.Connect4.pas** において、インタフェース `IMyHead`/`IMyKnot`/`IMyTail` を作る必要もなくなる。
+```pascal
+     IItem<_TPrev_,_TNext_:IItem> = class( IItem )
+       ///// アクセス
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
+       ///// プロパティ
+       property Prev :_TPrev_ read GetPrev write SetPrev;
+       property Next :_TNext_ read GetNext write SetNext;
+     end;
+```
+```pascal
+     TItem<_TPrev_,_TNext_:IItem> = class( TItem, IItem<_TPrev_,_TNext_> )
+     protected
+       ///// アクセス
+       function GetPrev :_TPrev_;  procedure SetPrev( Prev_:_TPrev_ );
+       function GetNext :_TNext_;  procedure SetNext( Next_:_TNext_ );
+     public
+       ///// プロパティ
+       property Prev :_TPrev_ read GetPrev write SetPrev;
+       property Next :_TNext_ read GetNext write SetNext;
+     end;
+```
+
+しかしこの場合も、インタフェースのプロトタイプ宣言 `= interface;` 段階において、すべてのインタフェースが 'IInterface' 型と見なされる問題により、キャストインタフェースへ代入することができなくなる。
+```pascal
+     IMyHead = interface;
+     IMyKnot = interface;
+     IMyTail = interface;
+```
+```pascal
+     IMyHead = class( IItem<TMyItem,TMyKnot> )
+     end;
+     
+     IMyKnot = class( IItem<TMyHead,TMyTail> )
+     end;
+     
+     IMyTail = class( IItem<TMyKnot,TMyItem> )
      end;
 ```
