@@ -54,7 +54,7 @@ end;
 ```
 
 ## MYX.Connect2.pas
-プロパティをキャストするジェネリクスクラス `TItem<P,N>` を定義する（以降`キャストクラス`と呼称）。
+プロパティをキャストするジェネリッククラス `TItem<P,N>` を定義する（以降`キャストクラス`と呼称）。
 ```pascal
      TItem<_TPrev_,_TNext_:IItem> = class( TItem, IItem )
      private
